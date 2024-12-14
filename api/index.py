@@ -34,11 +34,11 @@ def handle_search():
             }
         },
         aggs={
-            'doctype-agg': {
-                'terms': {
-                    'field': 'doctype.keyword',
-                }
-            },
+            # 'doctype-agg': {
+            #     'terms': {
+            #         'field': 'doctype.keyword',
+            #     }
+            # },
             'year-agg': {
                 'date_histogram': {
                     'field': 'doc_date',
@@ -51,10 +51,10 @@ def handle_search():
         from_=from_,
     )
     aggs = {
-        'Doctype': {
-            bucket['key']: bucket['doc_count']
-            for bucket in results['aggregations']['doctype-agg']['buckets']
-        },
+        # 'Doctype': {
+        #     bucket['key']: bucket['doc_count']
+        #     for bucket in results['aggregations']['doctype-agg']['buckets']
+        # },
         'Year': {
             bucket['key_as_string']: bucket['doc_count']
             for bucket in results['aggregations']['year-agg']['buckets']
