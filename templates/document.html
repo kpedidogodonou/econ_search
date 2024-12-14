@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p><a href="javascript:history.back(1)" class="btn btn-primary">← Back</a></p>
+    <p><a href="{{ pdf_url }}" class="btn btn-secondary" target="_blank">Download PDF</a></p>
+    <p><a href="{{ source_link }}" class="btn btn-info" target="_blank">Visit Page</a></p>
+    <h2>{{ title }}</h2>
+    {% for paragraph in paragraphs %}
+        <p>{{ paragraph }}</p>
+    {% endfor %}
+{% endblock %}
