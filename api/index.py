@@ -2,16 +2,16 @@ import re
 from flask import Flask, render_template, request
 from search import Search
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 es = Search()
 
 
-@application.get("/")
+@app.get("/")
 def index():
     return render_template("index.html")
 
-@application.post('/')
+@app.post('/')
 def handle_search():
     query = request.form.get('query', '')
     filters, parsed_query = extract_filters(query)
@@ -65,7 +65,7 @@ def handle_search():
                            query=query, from_=from_,
                            total=results['hits']['total']['value'], aggs=aggs)
 
-@application.get("/document/<id>")
+@app.get("/document/<id>")
 def get_document(id):
     document = es.retrieve_document(id)
     title = document['_source']['name']
@@ -75,7 +75,7 @@ def get_document(id):
     return render_template('document.html', title=title, paragraphs=paragraphs, pdf_url=pdf_url, source_link=source_link)
 
 
-@application.cli.command()
+@app.cli.command()
 def reindex():
     """Regenerate the Elasticsearch index"""
     response = es.reindex()
@@ -115,7 +115,7 @@ def extract_filters(query):
     return {'filter': filters}, query
 
 
-@application.cli.command()
+@app.cli.command()
 def deploy_elser():
     """Deploy the ELSER v2 model to Elasticsearch"""
     try: 
@@ -127,4 +127,4 @@ def deploy_elser():
 
  
 if __name__ == "__main__":
-    application.run(debug=True)
+    app.run(debug=True)
